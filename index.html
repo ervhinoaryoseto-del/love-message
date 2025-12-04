@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Love Message App 💙</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Helvetica', 'Arial', sans-serif;
+            background: linear-gradient(135deg, #E3F2FD 0%, #BBDEFB 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .container {
+            text-align: center;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            width: 90%;
+        }
+
+        .input-screen {
+            animation: fadeIn 0.8s ease-in;
+        }
+
+        .message-screen {
+            display: none;
+            animation: fadeIn 1s ease-in;
+        }
+
+        .message-screen.active {
+            display: block;
+        }
+
+        h1 {
+            color: #1565C0;
+            font-size: 2em;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .subtitle {
+            color: #1976D2;
+            font-size: 1.1em;
+            margin-bottom: 30px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            max-width: 300px;
+            padding: 15px;
+            font-size: 1.2em;
+            text-align: center;
+            border: 2px solid #90CAF9;
+            border-radius: 10px;
+            margin: 20px 0;
+            transition: all 0.3s ease;
+            color: #1565C0;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #2196F3;
+            box-shadow: 0 0 20px rgba(33, 150, 243, 0.3);
+            transform: scale(1.05);
+        }
+
+        button {
+            background: #2196F3;
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.2em;
+            font-weight: bold;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(33, 150, 243, 0.3);
+        }
+
+        button:hover {
+            background: #1976D2;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(33, 150, 243, 0.4);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .love-message {
+            font-size: 1.5em;
+            color: #0D47A1;
+            font-weight: bold;
+            margin: 20px 0;
+            opacity: 0;
+            animation: fadeInText 1.5s ease-in forwards;
+        }
+
+        .love-message-2 {
+            font-size: 1.3em;
+            color: #1976D2;
+            font-weight: bold;
+            margin: 10px 0 30px 0;
+            opacity: 0;
+            animation: fadeInText 1.5s ease-in 0.5s forwards;
+        }
+
+        .rose-container {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            margin: 30px auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .rose-image {
+            width: 280px;
+            height: 280px;
+            object-fit: cover;
+            animation: floating 3s ease-in-out infinite;
+            border-radius: 20px;
+            border: 5px solid white;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            background: white;
+        }
+
+        .rose-frame {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            background: linear-gradient(135deg, #64B5F6, #2196F3);
+            border-radius: 25px;
+            padding: 10px;
+            box-shadow: 0 20px 50px rgba(33, 150, 243, 0.4);
+        }
+
+        .corner-decoration {
+            position: absolute;
+            font-size: 24px;
+            animation: bounce 2s ease-in-out infinite;
+            z-index: 10;
+        }
+
+        .corner-top-left {
+            top: -10px;
+            left: -10px;
+            animation-delay: 0s;
+        }
+
+        .corner-top-right {
+            top: -10px;
+            right: -10px;
+            animation-delay: 0.5s;
+        }
+
+        .corner-bottom-left {
+            bottom: -10px;
+            left: -10px;
+            animation-delay: 1s;
+        }
+
+        .corner-bottom-right {
+            bottom: -10px;
+            right: -10px;
+            animation-delay: 1.5s;
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0) scale(1);
+            }
+            50% {
+                transform: translateY(-10px) scale(1.2);
+            }
+        }
+
+        .sparkle {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: white;
+            border-radius: 50%;
+            pointer-events: none;
+            animation: sparkleAnimation 1.5s ease-in-out infinite;
+        }
+
+        .footer {
+            color: #1976D2;
+            font-style: italic;
+            margin-top: 30px;
+            opacity: 0;
+            animation: fadeInText 1.5s ease-in 1s forwards;
+        }
+
+        .footer-input {
+            color: #64B5F6;
+            font-style: italic;
+            margin-top: 30px;
+            font-size: 0.9em;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes fadeInText {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes floating {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        @keyframes sparkleAnimation {
+            0% {
+                opacity: 0;
+                transform: scale(0) rotate(0deg);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1) rotate(180deg);
+            }
+            100% {
+                opacity: 0;
+                transform: scale(0) rotate(360deg);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 1.5em;
+            }
+            
+            .love-message {
+                font-size: 1.2em;
+            }
+            
+            .love-message-2 {
+                font-size: 1.1em;
+            }
+            
+            .rose-image {
+                width: 200px;
+                height: 200px;
+            }
+
+            .rose-frame {
+                width: 220px;
+                height: 220px;
+            }
+
+            .corner-decoration {
+                font-size: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Input Screen -->
+        <div class="input-screen" id="inputScreen">
+            <h1>Halo Babe Kiki 💙💙💙!</h1>
+            <p class="subtitle">Apakah benar ini kiki? (Masukkan nama kalo iya)</p>
+            <input type="text" id="nameInput" placeholder="Disini..." autofocus>
+            <br>
+            <button onclick="showMessage()">Lihat Pesan</button>
+            <p class="footer-input">From Inosaurus 💙</p>
+        </div>
+
+        <!-- Message Screen -->
+        <div class="message-screen" id="messageScreen">
+            <div class="love-message" id="message1"></div>
+            <div class="love-message-2" id="message2">aku sayang kamu mwehwehhehwe💙</div>
+            
+            <div class="rose-container" id="roseContainer">
+                <img src="https://i.ibb.co.com/4Rhf1B91/rayfordtrez.jpg" alt="Rose" class="rose-image" id="roseImage">
+            </div>
+            
+            <div class="footer">KANGEN KIKII :'( </div>
+        </div>
+    </div>
+
+    <script>
+        // Allow Enter key to submit
+        document.getElementById('nameInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                showMessage();
+            }
+        });
+
+        function showMessage() {
+            const name = document.getElementById('nameInput').value.trim() || 'Sayang';
+            
+            // Hide input screen
+            document.getElementById('inputScreen').style.display = 'none';
+            
+            // Show message screen
+            const messageScreen = document.getElementById('messageScreen');
+            messageScreen.classList.add('active');
+            
+            // Set personalized message
+            document.getElementById('message1').textContent = `Haloo ${name}, ini ino...`;
+            
+            // Start sparkle animation
+            createSparkles();
+        }
+
+        function createSparkles() {
+            const container = document.getElementById('roseContainer');
+            
+            setInterval(() => {
+                // Create sparkle
+                const sparkle = document.createElement('div');
+                sparkle.className = 'sparkle';
+                
+                // Random position around rose
+                const angle = Math.random() * Math.PI * 2;
+                const distance = 80 + Math.random() * 60;
+                const x = 150 + Math.cos(angle) * distance;
+                const y = 150 + Math.sin(angle) * distance;
+                
+                sparkle.style.left = x + 'px';
+                sparkle.style.top = y + 'px';
+                
+                // Random color (blue/white theme)
+                const colors = ['#FFFFFF', '#E3F2FD', '#BBDEFB', '#90CAF9', '#64B5F6'];
+                sparkle.style.background = colors[Math.floor(Math.random() * colors.length)];
+                
+                // Random delay
+                sparkle.style.animationDelay = Math.random() * 0.5 + 's';
+                
+                container.appendChild(sparkle);
+                
+                // Remove after animation
+                setTimeout(() => {
+                    sparkle.remove();
+                }, 1500);
+            }, 300);
+        }
+    </script>
+</body>
+</html>
